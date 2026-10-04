@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>王正工作室 — 官方网站</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --primary: #1b4e8f;
+    --primary-dark: #123a6b;
+    --primary-light: #2c6bb5;
+    --accent: #c0392b;
+    --text: #333;
+    --muted: #7a8699;
+    --line: #e3e8ef;
+    --bg: #f5f7fa;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                 "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text);
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { text-decoration: none; color: inherit; }
+  ul { list-style: none; }
+  img { display: block; max-width: 100%; }
+
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+  /* ============ 顶栏 ============ */
+  .topbar {
+    background: #f2f4f7;
+    border-bottom: 1px solid var(--line);
+    font-size: 13px;
+    color: #667085;
+    height: 36px;
+    line-height: 36px;
+  }
+  .topbar .wrap { display: flex; justify-content: space-between; align-items: center; }
+  .topbar .links a { margin-left: 18px; transition: color .2s; }
+  .topbar .links a:hover { color: var(--primary); }
+
+  /* ============ 头部 ============ */
+  .header { background: #fff; padding: 20px 0; }
+  .header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .brand-mark {
+    width: 54px; height: 54px; border-radius: 50%;
+    background: linear-gradient(135deg, #1b4e8f, #3a86d6);
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 700; letter-spacing: 1px; flex-shrink: 0;
+  }
+  .brand-text h1 {
+    font-size: 25px; color: var(--primary-dark);
+    letter-spacing: 3px; font-weight: 700; line-height: 1.25;
+  }
+  .brand-text p {
+    font-size: 11px; color: #98a2b3; letter-spacing: 2px;
+    text-transform: uppercase; margin-top: 2px;
+  }
+
+  .search { display: flex; border: 1px solid #cfd8e3; border-radius: 2px; overflow: hidden; }
+  .search input {
+    border: 0; outline: 0; padding: 0 14px; height: 38px;
+    width: 220px; font-size: 14px; color: var(--text); background: #fff;
+  }
+  .search input::placeholder { color: #b0b8c4; }
+  .search button {
+    border: 0; background: var(--primary); color: #fff;
+    padding: 0 22px; cursor: pointer; font-size: 14px;
+    font-family: inherit; transition: background .2s;
+  }
+  .search button:hover { background: var(--primary-dark); }
+
+  /* ============ 导航 ============ */
+  .nav { background: var(--primary); }
+  .nav ul { display: flex; }
+  .nav a {
+    display: block; padding: 0 30px; height: 50px; line-height: 50px;
+    color: #fff; font-size: 16px; letter-spacing: 1px; transition: background .2s;
+  }
+  .nav a:hover, .nav a.active { background: var(--primary-dark); }
+
+  /* ============ 焦点图 + 公告 ============ */
+  .intro { background: var(--bg); padding: 24px 0; }
+  .intro .wrap { display: grid; grid-template-columns: 1fr 340px; gap: 20px; }
+
+  .hero {
+    position: relative; height: 340px; border-radius: 4px;
+    overflow: hidden; background: var(--primary-dark);
+  }
+  .slide {
+    position: absolute; inset: 0; opacity: 0; transition: opacity .7s ease;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 0 52px; color: #fff;
+  }
+  .slide.active { opacity: 1; }
+  .slide::after {
+    content: ""; position: absolute; right: -70px; bottom: -90px;
+    width: 280px; height: 280px; border-radius: 50%;
+    background: rgba(255,255,255,.07);
+  }
+  .slide::before {
+    content: ""; position: absolute; right: 90px; top: -60px;
+    width: 160px; height: 160px; border-radius: 50%;
+    background: rgba(255,255,255,.05);
+  }
+  .s1 { background: linear-gradient(135deg, #123a6b, #2c6bb5); }
+  .s2 { background: linear-gradient(135deg, #14425c, #2b7a8f); }
+  .s3 { background: linear-gradient(135deg, #1a3a66, #3a6fb0); }
+
+  .slide h2 {
+    font-size: 30px; font-weight: 600; letter-spacing: 3px;
+    margin-bottom: 16px; position: relative; z-index: 1;
+  }
+  .slide p {
+    font-size: 15px; line-height: 1.9; opacity: .82;
+    max-width: 430px; margin-bottom: 26px; position: relative; z-index: 1;
+  }
+  .slide .btn {
+    align-self: flex-start; border: 1px solid rgba(255,255,255,.65);
+    padding: 9px 28px; font-size: 14px; border-radius: 2px;
+    letter-spacing: 1px; transition: all .25s; position: relative; z-index: 1;
+  }
+  .slide .btn:hover { background: #fff; color: var(--primary); border-color: #fff; }
+
+  .dots {
+    position: absolute; left: 52px; bottom: 28px;
+    display: flex; gap: 9px; z-index: 2;
+  }
+  .dot {
+    width: 28px; height: 3px; border: 0; padding: 0;
+    background: rgba(255,255,255,.38); cursor: pointer; transition: background .2s;
+  }
+  .dot.active { background: #fff; }
+
+  /* 面板通用 */
+  .panel {
+    background: #fff; border-radius: 4px; padding: 20px 22px;
+    box-shadow: 0 1px 3px rgba(16,42,76,.06);
+  }
+  .panel-head {
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid var(--line); padding-bottom: 12px; margin-bottom: 4px;
+  }
+  .panel-title {
+    font-size: 17px; font-weight: 700; color: var(--primary-dark);
+    position: relative; padding-left: 12px; letter-spacing: 1px;
+  }
+  .panel-title::before {
+    content: ""; position: absolute; left: 0; top: 50%;
+    transform: translateY(-50%); width: 4px; height: 17px;
+    background: var(--primary); border-radius: 1px;
+  }
+  .panel-more { font-size: 13px; color: #98a2b3; transition: color .2s; }
+  .panel-more:hover { color: var(--primary); }
+
+  .notice-panel { height: 340px; display: flex; flex-direction: column; }
+  .notice { flex: 1; overflow-y: auto; }
+  .notice li {
+    display: flex; gap: 12px; align-items: center;
+    padding: 11px 0; border-bottom: 1px dashed #e8edf4; font-size: 14px;
+  }
+  .notice li:last-child { border-bottom: 0; }
+  .notice a {
+    flex: 1; color: #344054; overflow: hidden;
+    text-overflow: ellipsis; white-space: nowrap; transition: color .2s;
+  }
+  .notice a:hover { color: var(--primary); }
+  .notice .date { color: #98a2b3; font-size: 13px; flex-shrink: 0; }
+  .tag-top {
+    font-size: 11px; color: #fff; background: var(--accent);
+    padding: 1px 5px; border-radius: 2px; flex-shrink: 0; line-height: 1.5;
+  }
+
+  /* ============ 通用区块 ============ */
+  .section { padding: 46px 0; }
+  .section-head { text-align: center; margin-bottom: 36px; }
+  .section-head h2 {
+    font-size: 26px; color: var(--primary-dark);
+    letter-spacing: 4px; font-weight: 600;
+  }
+  .section-head h2::after {
+    content: ""; display: block; width: 36px; height: 3px;
+    background: var(--primary); margin: 14px auto 0; border-radius: 2px;
+  }
+  .section-head p {
+    color: #98a2b3; font-size: 13px; letter-spacing: 1px; margin-top: 12px;
+  }
+
+  /* ============ 业务卡片 ============ */
+  .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .card {
+    border: 1px solid #e6ebf2; border-radius: 4px; background: #fff;
+    padding: 32px 22px; text-align: center; transition: all .25s;
+  }
+  .card:hover {
+    border-color: var(--primary);
+    box-shadow: 0 10px 26px rgba(27,78,143,.12);
+    transform: translateY(-4px);
+  }
+  .card .ico {
+    width: 58px; height: 58px; margin: 0 auto 18px; border-radius: 50%;
+    background: #eef4fc; color: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    transition: all .25s;
+  }
+  .card:hover .ico { background: var(--primary); color: #fff; }
+  .card h3 { font-size: 17px; color: #1d2939; margin-bottom: 10px; letter-spacing: 1px; }
+  .card p { font-size: 13.5px; color: var(--muted); line-height: 1.85; }
+
+  /* ============ 新闻区 ============ */
+  .news { background: var(--bg); padding: 46px 0; }
+  .news .wrap { display: grid; grid-template-columns: 1fr 340px; gap: 20px; }
+
+  .tabs { display: flex; gap: 28px; border-bottom: 1px solid var(--line); margin-bottom: 4px; }
+  .tab {
+    padding: 0 0 12px; font-size: 16px; color: #667085; cursor: pointer;
+    position: relative; font-weight: 500; transition: color .2s;
+    background: none; border: 0; font-family: inherit;
+  }
+  .tab:hover { color: var(--primary); }
+  .tab.active { color: var(--primary); }
+  .tab.active::after {
+    content: ""; position: absolute; left: 0; right: 0;
+    bottom: -1px; height: 2px; background: var(--primary);
+  }
+
+  .news-list li {
+    display: flex; gap: 18px; align-items: flex-start;
+    padding: 17px 0; border-bottom: 1px dashed #e8edf4;
+  }
+  .news-list li:last-child { border-bottom: 0; }
+  .news-date {
+    flex: 0 0 66px; text-align: center;
+    border-right: 1px solid #eef2f7; padding-right: 16px;
+  }
+  .news-date .d {
+    font-size: 23px; color: var(--primary); font-weight: 600; line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+  .news-date .m { font-size: 12px; color: #98a2b3; margin-top: 2px; }
+  .news-body { flex: 1; min-width: 0; }
+  .news-body h4 {
+    font-size: 15.5px; color: #1d2939; font-weight: 600;
+    margin-bottom: 6px; transition: color .2s;
+  }
+  .news-body h4:hover { color: var(--primary); }
+  .news-body p {
+    font-size: 13px; color: var(--muted); line-height: 1.7;
+    display: -webkit-box; -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical; overflow: hidden;
+  }
+
+  /* 侧栏 */
+  .side-stack { display: flex; flex-direction: column; gap: 20px; }
+
+  .contact-card {
+    background: linear-gradient(160deg, #1b4e8f, #2c6bb5);
+    border-radius: 4px; padding: 26px 24px; color: #fff;
+    position: relative; overflow: hidden;
+  }
+  .contact-card::after {
+    content: ""; position: absolute; right: -50px; bottom: -60px;
+    width: 170px; height: 170px; border-radius: 50%;
+    background: rgba(255,255,255,.07);
+  }
+  .contact-card h3 {
+    font-size: 17px; letter-spacing: 2px; margin-bottom: 6px;
+    font-weight: 600; position: relative; z-index: 1;
+  }
+  .contact-card .sub {
+    font-size: 12px; opacity: .68; letter-spacing: 1px;
+    margin-bottom: 20px; position: relative; z-index: 1;
+  }
+  .contact-card dl { position: relative; z-index: 1; }
+  .contact-card .row {
+    display: flex; gap: 10px; font-size: 13.5px;
+    padding: 9px 0; border-top: 1px solid rgba(255,255,255,.14);
+  }
+  .contact-card .row:first-of-type { border-top: 0; }
+  .contact-card .k { flex: 0 0 60px; opacity: .7; }
+  .contact-card .v { flex: 1; word-break: break-all; }
+
+  .quick { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .quick a {
+    display: block; text-align: center; padding: 14px 6px;
+    background: #fff; border: 1px solid #e6ebf2; border-radius: 4px;
+    font-size: 14px; color: #344054; transition: all .22s;
+  }
+  .quick a:hover {
+    border-color: var(--primary); color: var(--primary);
+    background: #f4f8fe;
+  }
+
+  /* ============ 页脚 ============ */
+  .footer {
+    background: var(--primary-dark); color: #b8c6da;
+    font-size: 13.5px; padding-top: 46px;
+  }
+  .footer .cols {
+    display: grid; grid-template-columns: 1.7fr 1fr 1fr 1.3fr; gap: 32px;
+  }
+  .footer h4 {
+    color: #fff; font-size: 15px; font-weight: 600;
+    margin-bottom: 18px; letter-spacing: 1px;
+  }
+  .footer li { margin-bottom: 10px; }
+  .footer a { transition: color .2s; }
+  .footer a:hover { color: #fff; }
+
+  .foot-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .foot-brand .fb-mark {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: rgba(255,255,255,.12); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 700; flex-shrink: 0;
+  }
+  .foot-brand strong { color: #fff; font-size: 17px; letter-spacing: 2px; }
+  .foot-desc { line-height: 1.9; font-size: 13px; color: #93a6c0; }
+
+  .footer .bottom {
+    border-top: 1px solid rgba(255,255,255,.12);
+    margin-top: 38px; padding: 18px 0; text-align: center;
+    font-size: 12.5px; color: #8fa3bf; line-height: 1.9;
+  }
+  .footer .bottom span { margin: 0 8px; }
+
+  /* ============ 响应式 ============ */
+  @media (max-width: 1024px) {
+    .intro .wrap { grid-template-columns: 1fr; }
+    .notice-panel { height: auto; max-height: 360px; }
+    .cards { grid-template-columns: repeat(2, 1fr); }
+    .news .wrap { grid-template-columns: 1fr; }
+    .footer .cols { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 680px) {
+    .topbar .links { display: none; }
+    .header .wrap { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .search { width: 100%; }
+    .search input { flex: 1; width: auto; }
+    .nav ul { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .nav ul::-webkit-scrollbar { display: none; }
+    .nav a { padding: 0 18px; font-size: 15px; white-space: nowrap; }
+    .hero { height: 300px; }
+    .slide { padding: 0 26px; }
+    .slide h2 { font-size: 22px; letter-spacing: 2px; }
+    .slide p { font-size: 14px; }
+    .dots { left: 26px; bottom: 22px; }
+    .cards { grid-template-columns: 1fr; }
+    .section, .news { padding: 34px 0; }
+    .footer .cols { grid-template-columns: 1fr; gap: 26px; }
+    .news-list li { gap: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ 顶栏 ============ -->
+<div class="topbar">
+  <div class="wrap">
+    <div class="left">欢迎访问王正工作室官方网站　<span id="today"></span></div>
+    <div class="links">
+      <a href="#">设为首页</a>
+      <a href="#">加入收藏</a>
+      <a href="#">无障碍浏览</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 头部 ============ -->
+<header class="header">
+  <div class="wrap">
+    <div class="brand">
+      <div class="brand-mark">YH</div>
+      <div class="brand-text">
+        <h1>王正工作室</h1>
+        <p>wz Studio</p>
+      </div>
+    </div>
+    <form class="search" onsubmit="return false;">
+      <input type="text" placeholder="请输入关键词搜索…">
+      <button type="submit">搜索</button>
+    </form>
+  </div>
+</header>
+
+<!-- ============ 导航 ============ -->
+<nav class="nav">
+  <div class="wrap">
+    <ul>
+      <li><a href="#" class="active">首　页</a></li>
+      <li><a href="#">关于我们</a></li>
+      <li><a href="#">业务范围</a></li>
+      <li><a href="#">案例展示</a></li>
+      <li><a href="#">团队介绍</a></li>
+      <li><a href="#">新闻动态</a></li>
+      <li><a href="#">联系我们</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ============ 焦点图 + 通知公告 ============ -->
+<section class="intro">
+  <div class="wrap">
+
+    <div class="hero">
+      <div class="slide s1 active">
+        <h2>以设计驱动价值</h2>
+        <p>十二年专注品牌、空间与数字体验设计，为超过 200 家客户提供从策略到落地的一体化解决方案。</p>
+        <a href="#" class="btn">了解我们</a>
+      </div>
+      <div class="slide s2">
+        <h2>让专业看得见</h2>
+        <p>规范化服务流程、透明化项目节点、全周期质量把控，每一个细节都经得起推敲。</p>
+        <a href="#" class="btn">服务流程</a>
+      </div>
+      <div class="slide s3">
+        <h2>与优秀者同行</h2>
+        <p>汇聚建筑、视觉、交互多领域设计师，以跨学科协作回应真实而复杂的命题。</p>
+        <a href="#" class="btn">加入团队</a>
+      </div>
+      <div class="dots">
+        <button class="dot active" aria-label="第一张"></button>
+        <button class="dot" aria-label="第二张"></button>
+        <button class="dot" aria-label="第三张"></button>
+      </div>
+    </div>
+
+    <div class="panel notice-panel">
+      <div class="panel-head">
+        <div class="panel-title">通知公告</div>
+        <a href="#" class="panel-more">更多 &gt;</a>
+      </div>
+      <ul class="notice">
+        <li><span class="tag-top">置顶</span><a href="#">关于 2025 年国庆节放假安排的通知</a><span class="date">09-26</span></li>
+        <li><a href="#">工作室获评"省级优秀设计机构"称号</a><span class="date">09-18</span></li>
+        <li><a href="#">2025 年度设计师招聘公告</a><span class="date">09-05</span></li>
+        <li><a href="#">官方网站改版上线公告</a><span class="date">08-22</span></li>
+        <li><a href="#">关于设计服务价格体系调整的说明</a><span class="date">08-10</span></li>
+        <li><a href="#">项目合作流程与资料准备指南</a><span class="date">07-28</span></li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ 业务范围 ============ -->
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>业务范围</h2>
+      <p>SCOPE OF BUSINESS</p>
+    </div>
+
+    <div class="cards">
+
+      <div class="card">
+        <div class="ico">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M12 22V12M3 7l9 5 9-5"/>
+          </svg>
+        </div>
+        <h3>品牌设计</h3>
+        <p>标志设计 · VI 系统 · 品牌策略<br>让品牌形象统一而有辨识度</p>
+      </div>
+
+      <div class="card">
+        <div class="ico">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 21V9"/>
+          </svg>
+        </div>
+        <h3>空间设计</h3>
+        <p>办公空间 · 展陈设计 · 商业空间<br>从平面到落地的整体方案</p>
+      </div>
+
+      <div class="card">
+        <div class="ico">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 21h8M12 18v3"/>
+          </svg>
+        </div>
+        <h3>数字产品</h3>
+        <p>网站建设 · 小程序 · UI/UX<br>兼顾美观与可用的交互体验</p>
+      </div>
+
+      <div class="card">
+        <div class="ico">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/>
+          </svg>
+        </div>
+        <h3>视觉影像</h3>
+        <p>宣传片 · 产品摄影 · 三维渲染<br>用画面讲清楚一件事</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ 新闻动态 + 侧栏 ============ -->
+<section class="news">
+  <div class="wrap">
+
+    <div class="panel">
+      <div class="tabs">
+        <button class="tab active" data-tab="a">工作室动态</button>
+        <button class="tab" data-tab="b">行业资讯</button>
+      </div>
+
+      <ul class="news-list pane" data-pane="a">
+        <li>
+          <div class="news-date"><div class="d">18</div><div class="m">2025-09</div></div>
+          <div class="news-body">
+            <h4><a href="#">我工作室中标市图书馆视觉导视系统设计项目</a></h4>
+            <p>经过为期一个月的方案比选，工作室提交的"书香·经纬"导视系统方案在六家投标单位中脱颖而出，方案强调信息层级的清晰与阅读动线的顺畅。</p>
+          </div>
+        </li>
+        <li>
+          <div class="news-date"><div class="d">05</div><div class="m">2025-09</div></div>
+          <div class="news-body">
+            <h4><a href="#">荣获 2024 年度"金堂奖"空间设计优秀奖</a></h4>
+            <p>获奖项目为某科技企业总部办公空间改造，设计以"留白与弹性"为核心，通过模块化家具与可变隔断满足团队规模变化的长期需求。</p>
+          </div>
+        </li>
+        <li>
+          <div class="news-date"><div class="d">21</div><div class="m">2025-08</div></div>
+          <div class="news-body">
+            <h4><a href="#">与云启科技达成品牌战略合作</a></h4>
+            <p>双方将在品牌视觉体系、产品界面体验及年度传播物料三个方向展开为期两年的深度合作，首期项目已于本月正式启动。</p>
+          </div>
+        </li>
+        <li>
+          <div class="news-date"><div class="d">09</div><div class="m">2025-08</div></div>
+          <div class="news-body">
+            <h4><a href="#">2025 年春季设计沙龙成功举办</a></h4>
+            <p>本次沙龙以"小团队如何做好大项目"为主题，邀请了三位业内同行分享协作经验，共 60 余位设计师到场参与交流。</p>
+          </div>
+        </li>
+      </ul>
+
+      <ul class="news-list pane" data-pane="b" hidden>
+        <li>
+          <div class="news-date"><div class="d">12</div><div class="m">2025-09</div></div>
+          <div class="news-body">
+            <h4><a href="#">《2025 中国设计行业发展报告》发布</a></h4>
+            <p>报告指出，中小型设计机构正加速向"策略 + 落地"一体化服务转型，客户对全流程交付能力的要求显著提高。</p>
+          </div>
+        </li>
+        <li>
+          <div class="news-date"><div class="d">30</div><div class="m">2025-08</div></div>
+          <div class="news-body">
+            <h4><a href="#">数字孪生技术在城市更新项目中的应用</a></h4>
+            <p>通过三维实景建模与实时数据接入，设计团队可以在方案阶段更直观地评估空间改造效果，缩短沟通成本。</p>
+          </div>
+        </li>
+        <li>
+          <div class="news-date"><div class="d">14</div><div class="m">2025-08</div></div>
+          <div class="news-body">
+            <h4><a href="#">可持续设计成为行业新趋势</a></h4>
+            <p>从材料回收到能耗模拟，越来越多的项目在招标阶段就将环保指标写入设计任务书。</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="side-stack">
+
+      <div class="contact-card">
+        <h3>联系我们</h3>
+        <div class="sub">CONTACT US</div>
+        <dl>
+          <div class="row"><span class="k">咨询电话</span><span class="v">none</span></div>
+          <div class="row"><span class="k">电子邮箱</span><span class="v">15155467885@163.con</span></div>
+          <div class="row"><span class="k">办公地址</span><span class="v">0938</span></div>
+          <div class="row"><span class="k">工作时间</span><span class="v">周一至周五 9:00–18:00</span></div>
+        </dl>
+      </div>
+
+      <div class="quick">
+        <a href="#">项目咨询</a>
+        <a href="#">案例展示</a>
+        <a href="#">资料下载</a>
+        <a href="#">加入我们</a>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ 页脚 ============ -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="cols">
+
+      <div>
+        <div class="foot-brand">
+          <div class="fb-mark">WZ</div>
+          <strong>王正工作室</strong>
+        </div>
+        <p class="foot-desc">
+          专注品牌、空间与体验设计，<br>
+          以专业能力回应每一次托付。
+        </p>
+      </div>
+
+      <div>
+        <h4>快速导航</h4>
+        <ul>
+          <li><a href="#">关于我们</a></li>
+          <li><a href="#">业务范围</a></li>
+          <li><a href="#">案例展示</a></li>
+          <li><a href="#">新闻动态</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>服务支持</h4>
+        <ul>
+          <li><a href="#">服务流程</a></li>
+          <li><a href="#">常见问题</a></li>
+          <li><a href="#">资料下载</a></li>
+          <li><a href="#">意见反馈</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>联系方式</h4>
+        <ul>
+          <li>电话：0311-8888 6666</li>
+          <li>邮箱：hello@yunheng.design</li>
+          <li>地址：创意产业园 A 座 3 层</li>
+          <li>邮编：050000</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="bottom">
+      © 2025 王正工作室 版权所有
+      <span>|</span> --
+      <span>|</span> --
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* ---------- 焦点图轮播 ---------- */
+  (function () {
+    var slides = document.querySelectorAll('.slide');
+    var dots = document.querySelectorAll('.dot');
+    var index = 0, timer = null;
+
+    function go(n) {
+      index = (n + slides.length) % slides.length;
+      slides.forEach(function (s, i) { s.classList.toggle('active', i === index); });
+      dots.forEach(function (d, i) { d.classList.toggle('active', i === index); });
+    }
+
+    dots.forEach(function (d, i) {
+      d.addEventListener('click', function () { go(i); reset(); });
+    });
+
+    function reset() {
+      clearInterval(timer);
+      timer = setInterval(function () { go(index + 1); }, 6000);
+    }
+    reset();
+  })();
+
+  /* ---------- 新闻标签切换 ---------- */
+  (function () {
+    var tabs = document.querySelectorAll('.tab');
+    var panes = document.querySelectorAll('.pane');
+    tabs.forEach(function (t) {
+      t.addEventListener('click', function () {
+        var key = t.dataset.tab;
+        tabs.forEach(function (x) { x.classList.toggle('active', x === t); });
+        panes.forEach(function (p) { p.hidden = (p.dataset.pane !== key); });
+      });
+    });
+  })();
+
+  /* ---------- 顶栏日期 ---------- */
+  (function () {
+    var d = new Date();
+    var week = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'][d.getDay()];
+    document.getElementById('today').textContent =
+      d.getFullYear() + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日　' + week;
+  })();
+</script>
+
+</body>
+</html>
